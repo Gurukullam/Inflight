@@ -3160,87 +3160,34 @@
             return 'Grammar';
         }
         
-        // Enhanced scoring based on actual LanguageTool API results
+        // Custom band scoring based on specific criteria
         function calculateAPIBasedScores(wordCount, errorCount, errorCategories, readabilityScore, advancedWordPercentage, averageWordsPerSentence, languageToolErrors) {
-            // Weight errors by severity (from LanguageTool API)
-            let severityWeightedScore = 0;
-            let totalSeverityWeight = 0;
+            const totalErrors = errorCount;
+            const complexityRatio = advancedWordPercentage;
             
-            languageToolErrors.forEach(error => {
-                const severity = error.rule?.category?.id === 'GRAMMAR' ? 3 :
-                               error.rule?.category?.id === 'SPELLING' ? 2 :
-                               error.rule?.category?.id === 'STYLE' ? 1 : 1.5;
-                
-                severityWeightedScore += severity;
-                totalSeverityWeight += severity;
-            });
-            
-            // Calculate base score considering API feedback
-            const errorRate = wordCount > 0 ? (errorCount / wordCount) * 100 : 0;
-            const severityAdjustedErrorRate = wordCount > 0 ? (severityWeightedScore / wordCount) * 100 : 0;
-            
-            // Vocabulary and complexity factors
-            const vocabularyScore = Math.min(advancedWordPercentage * 2, 100);
-            
-            let sentenceComplexityScore = 100;
-            if (averageWordsPerSentence < 10) {
-                sentenceComplexityScore = 60;
-            } else if (averageWordsPerSentence > 25) {
-                sentenceComplexityScore = 70;
-            }
-            
-            let readabilityScoreAdjusted = 100;
-            if (readabilityScore < 30) {
-                readabilityScoreAdjusted = 40;
-            } else if (readabilityScore > 80) {
-                readabilityScoreAdjusted = 70;
-            }
-            
-            let lengthScore = 100;
-            if (wordCount < 150) {
-                lengthScore = 60;
-            } else if (wordCount > 500) {
-                lengthScore = 90;
-            }
-            
-            // Enhanced calculation using API severity data
-            const baseScore = Math.max(0, 100 - (severityAdjustedErrorRate * 10));
-            
-            const enhancedScore = Math.min(100, 
-                baseScore * 0.6 + 
-                vocabularyScore * 0.15 + 
-                sentenceComplexityScore * 0.1 + 
-                readabilityScoreAdjusted * 0.1 + 
-                lengthScore * 0.05
-            );
-            
-            // Convert to IELTS and CELPIP scales
             let ielts, celpip;
             
-            if (enhancedScore >= 95) {
-                ielts = 9; celpip = 12;
-            } else if (enhancedScore >= 90) {
-                ielts = 8.5; celpip = 11;
-            } else if (enhancedScore >= 85) {
-                ielts = 8; celpip = 10;
-            } else if (enhancedScore >= 80) {
-                ielts = 7.5; celpip = 9;
-            } else if (enhancedScore >= 75) {
-                ielts = 7; celpip = 8;
-            } else if (enhancedScore >= 70) {
-                ielts = 6.5; celpip = 7;
-            } else if (enhancedScore >= 65) {
-                ielts = 6; celpip = 6;
-            } else if (enhancedScore >= 60) {
-                ielts = 5.5; celpip = 5;
-            } else if (enhancedScore >= 55) {
-                ielts = 5; celpip = 4;
-            } else if (enhancedScore >= 50) {
-                ielts = 4.5; celpip = 3;
-            } else if (enhancedScore >= 40) {
-                ielts = 4; celpip = 2;
+            // Custom band scoring logic
+            if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
+                // Band 8 (CELPIP 10): Total Error < 2 AND Word count > 150 AND Complexity > 30%
+                ielts = 8;
+                celpip = 10;
+            } else if (totalErrors === 2 && wordCount > 150 && complexityRatio < 25) {
+                // Band 7 (CELPIP 9): Total Error = 2 AND Word count > 150 AND Complexity < 25%
+                ielts = 7;
+                celpip = 9;
+            } else if (totalErrors === 3 && wordCount > 150 && complexityRatio < 15) {
+                // Band 6 (CELPIP 8): Total Error = 3 AND Word count > 150 AND Complexity < 15%
+                ielts = 6;
+                celpip = 8;
+            } else if (totalErrors > 3 || wordCount < 150 || complexityRatio < 5) {
+                // Band 5 (CELPIP 6): Total Error > 3 OR Word count < 150 OR Complexity < 5%
+                ielts = 5;
+                celpip = 6;
             } else {
-                ielts = 3; celpip = 1;
+                // Default fallback for edge cases
+                ielts = 6;
+                celpip = 8;
             }
             
             return {
