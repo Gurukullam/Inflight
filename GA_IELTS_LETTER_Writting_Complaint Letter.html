@@ -3361,17 +3361,12 @@
                 ieltsScore = 6;
                 celpipScore = 8;
                 console.log('📝 Band 6: 3 errors, good length, basic complexity');
-            } else if (totalErrors > 3 || wordCount < 150 || complexityRatio < 5) {
-                // Band 5 (CELPIP 6): Total Error > 3 OR Word count < 150 OR Complexity < 5%
-                ieltsScore = 5;
-                celpipScore = 6;
-                console.log('⚠️ Band 5: High errors OR short text OR very low complexity');
-            } else {
-                // Default fallback for edge cases
-                ieltsScore = 6;
-                celpipScore = 8;
-                console.log('📋 Band 6: Default fallback for edge cases');
-            }
+                         } else if (totalErrors > 3 || wordCount < 150 || complexityRatio < 5) {
+                 // Band 5 (CELPIP 6): Total Error > 3 OR Word count < 150 OR Complexity < 5%
+                 ieltsScore = 5;
+                 celpipScore = 6;
+                 console.log('⚠️ Band 5: High errors OR short text OR very low complexity');
+             }
             
             console.log(`📈 Final scores: IELTS ${ieltsScore}/9, CELPIP ${celpipScore}/12`);
             
@@ -3526,10 +3521,7 @@
                 ieltsScore = 5;
                 celpipScore = 6;
             } else {
-                // Default fallback for edge cases
-                ieltsScore = 6;
-                celpipScore = 8;
-            }
+                             }
             
             return { ielts: ieltsScore, celpip: celpipScore };
         }
