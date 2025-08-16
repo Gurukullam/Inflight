@@ -2112,6 +2112,17 @@
                 const advancedWords = detectAdvancedWords(text);
                 const avgSentenceLength = sentenceCount > 0 ? (wordCount / sentenceCount).toFixed(1) : 0;
                 
+                // Calculate scores using our custom logic
+                const customScores = calculateAPIBasedScores(
+                    wordCount, 
+                    analysisResult.count, 
+                    analysisResult.categoryCount, 
+                    0, 
+                    (advancedWords.count / wordCount) * 100, 
+                    parseFloat(avgSentenceLength), 
+                    analysisResult.matches || []
+                );
+
                 // Store current analysis result
                 currentAnalysisResult = {
                     ...analysisResult,
@@ -2122,6 +2133,10 @@
                         advancedWordCount: advancedWords.count,
                         avgSentenceLength: parseFloat(avgSentenceLength),
                         characterCount: text.length
+                    },
+                    scores: {
+                        ielts: customScores.ielts,
+                        celpip: customScores.celpip
                     },
                     originalText: text
                 };
@@ -3522,11 +3537,11 @@
                 ieltsScore = 6;
                 celpipScore = 8;
             }
-            if (totalErrors > 3 || wordCount < 150 || complexityRatio < 5) {
+                        if (totalErrors > 3 || wordCount < 150 || complexityRatio < 5) {
                 // Band 5 (CELPIP 6): Total Error > 3 OR Word count < 150 OR Complexity < 5%
-                                 ieltsScore = 5;
-                 celpipScore = 6;
-             }
+                ieltsScore = 5;
+                celpipScore = 6;
+            }
             
             return { ielts: ieltsScore, celpip: celpipScore };
         }
