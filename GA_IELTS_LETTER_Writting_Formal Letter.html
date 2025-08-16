@@ -3183,13 +3183,13 @@
             let ielts = 5, celpip = 6; // Default values
             
             // Custom band scoring logic
-            if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
-                // Band 8 (CELPIP 10): Total Error < 2 AND Word count > 150 AND Complexity > 30%
+            if (totalErrors < 2 && wordCount > 150 && complexityRatio > 25) {
+                // Band 8 (CELPIP 10): Total Error < 2 AND Word count > 150 AND Complexity > 25%
                 ielts = 8;
                 celpip = 10;
             }
-            if (totalErrors === 2 && wordCount > 150 && complexityRatio < 25) {
-                // Band 7 (CELPIP 9): Total Error = 2 AND Word count > 150 AND Complexity < 25%
+            if (totalErrors === 2 && wordCount > 150 && complexityRatio < 20) {
+                // Band 7 (CELPIP 9): Total Error = 2 AND Word count > 150 AND Complexity < 20%
                 ielts = 7;
                 celpip = 9;
             }
@@ -3364,13 +3364,13 @@
                 (currentAnalysisResult.basicMetrics.advancedWordCount / currentAnalysisResult.basicMetrics.wordCount) * 100 : 20;
             
                          // Custom band scoring logic with separate if statements
-             if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
+             if (totalErrors < 2 && wordCount > 150 && complexityRatio > 25) {
                  // IELTS Band = 8, CELPIP = 10
                  ieltsScore = 8;
                  celpipScore = 10;
                  console.log('🎉 Band 8: Low errors, good length, high complexity');
              }
-             if (totalErrors === 2 && wordCount > 150 && complexityRatio < 25) {
+             if (totalErrors === 2 && wordCount > 150 && complexityRatio < 20) {
                  // IELTS Band = 7, CELPIP = 9
                  ieltsScore = 7;
                  celpipScore = 9;
@@ -3524,17 +3524,17 @@
             
             let ieltsScore = 5, celpipScore = 6; // Default values
             
-            // Custom band scoring logic
-            if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
-                // Band 8 (CELPIP 10): Total Error < 2 AND Word count > 150 AND Complexity > 30%
+                        // Custom band scoring logic
+            if (totalErrors < 2 && wordCount > 150 && complexityRatio > 25) {
+                // Band 8 (CELPIP 10): Total Error < 2 AND Word count > 150 AND Complexity > 25%
                 ieltsScore = 8;
-                                 celpipScore = 10;
-             }
-             if (totalErrors === 2 && wordCount > 150 && complexityRatio < 25) {
-                // Band 7 (CELPIP 9): Total Error = 2 AND Word count > 150 AND Complexity < 25%
+                celpipScore = 10;
+            }
+            if (totalErrors === 2 && wordCount > 150 && complexityRatio < 20) {
+                // Band 7 (CELPIP 9): Total Error = 2 AND Word count > 150 AND Complexity < 20%
                 ieltsScore = 7;
-                                 celpipScore = 9;
-             }
+                celpipScore = 9;
+            }
              if (totalErrors === 3 && wordCount > 150 && complexityRatio < 15) {
                 // Band 6 (CELPIP 8): Total Error = 3 AND Word count > 150 AND Complexity < 15%
                 ieltsScore = 6;
@@ -4163,12 +4163,12 @@
             let ielts = 5, celpip = 6; // Default values
             
             // Custom band scoring logic with separate if statements
-            if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
+            if (totalErrors < 2 && wordCount > 150 && complexityRatio > 25) {
                 // IELTS Band = 8, CELPIP = 10
                 ielts = 8;
                 celpip = 10;
             }
-            if (totalErrors === 2 && wordCount > 150 && complexityRatio < 25) {
+            if (totalErrors === 2 && wordCount > 150 && complexityRatio < 20) {
                 // IELTS Band = 7, CELPIP = 9
                 ielts = 7;
                 celpip = 9;

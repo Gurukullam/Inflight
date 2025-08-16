@@ -4163,12 +4163,12 @@
             let ielts = 5, celpip = 6; // Default values
             
             // Custom band scoring logic with separate if statements
-            if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
+            if (totalErrors < 2 && wordCount > 150 && complexityRatio > 25) {
                 // IELTS Band = 8, CELPIP = 10
                 ielts = 8;
                 celpip = 10;
             }
-            if (totalErrors === 2 && wordCount > 150 && complexityRatio < 25) {
+            if (totalErrors === 2 && wordCount > 150 && complexityRatio < 20) {
                 // IELTS Band = 7, CELPIP = 9
                 ielts = 7;
                 celpip = 9;
