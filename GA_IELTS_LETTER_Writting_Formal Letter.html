@@ -3165,7 +3165,7 @@
             const totalErrors = errorCount;
             const complexityRatio = advancedWordPercentage;
             
-            let ielts, celpip;
+            let ielts = 5, celpip = 6; // Default values
             
             // Custom band scoring logic
             if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
@@ -3341,7 +3341,7 @@
             // Calculate total errors across all types
             const totalErrors = grammarCount + spellingCount + punctuationCount + styleCount;
             
-            let ieltsScore, celpipScore;
+            let ieltsScore = 5, celpipScore = 6; // Default values
             
             // We need word count and complexity for custom logic - use global variables if available
             const wordCount = currentAnalysisResult?.basicMetrics?.wordCount || 150;
@@ -3443,8 +3443,8 @@
             else if (complexityRatio < 10) baseScore -= 0.3;
             
             // Ensure score is within bounds
-            const ieltsScore = Math.max(1, Math.min(9, Math.round(baseScore * 2) / 2)); // Round to nearest 0.5
-            const celpipScore = Math.max(1, Math.min(12, Math.round(ieltsScore * 1.33))); // Convert to CELPIP scale
+            // Use custom logic result instead of mathematical calculation
+            const celpipScore = celpipScore; // Use the celpipScore from custom logic above
             
             return {
                 ielts: ieltsScore,
@@ -3507,7 +3507,7 @@
             const wordCount = basicMetrics.wordCount;
             const complexityRatio = (basicMetrics.advancedWordCount / basicMetrics.wordCount) * 100;
             
-            let ieltsScore, celpipScore;
+            let ieltsScore = 5, celpipScore = 6; // Default values
             
             // Custom band scoring logic
             if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
@@ -4150,33 +4150,29 @@
                 lengthScore * 0.05
             );
             
-            // Convert to IELTS (1-9) and CELPIP (1-12) scales
-            let ielts, celpip;
+            // Use ONLY custom logic - no mathematical overrides
+            let ielts = 5, celpip = 6; // Default values
             
-            if (enhancedScore >= 95) {
-                ielts = 9; celpip = 12;
-            } else if (enhancedScore >= 90) {
-                ielts = 8.5; celpip = 11;
-            } else if (enhancedScore >= 85) {
-                ielts = 8; celpip = 10;
-            } else if (enhancedScore >= 80) {
-                ielts = 7.5; celpip = 9;
-            } else if (enhancedScore >= 75) {
-                ielts = 7; celpip = 8;
-            } else if (enhancedScore >= 70) {
-                ielts = 6.5; celpip = 7;
-            } else if (enhancedScore >= 65) {
-                ielts = 6; celpip = 6;
-            } else if (enhancedScore >= 60) {
-                ielts = 5.5; celpip = 5;
-            } else if (enhancedScore >= 55) {
-                ielts = 5; celpip = 4;
-            } else if (enhancedScore >= 50) {
-                ielts = 4.5; celpip = 3;
-            } else if (enhancedScore >= 40) {
-                ielts = 4; celpip = 2;
-            } else {
-                ielts = 3; celpip = 1;
+            // Custom band scoring logic with separate if statements
+            if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
+                // IELTS Band = 8, CELPIP = 10
+                ielts = 8;
+                celpip = 10;
+            }
+            if (totalErrors === 2 && wordCount > 150 && complexityRatio < 25) {
+                // IELTS Band = 7, CELPIP = 9
+                ielts = 7;
+                celpip = 9;
+            }
+            if (totalErrors === 3 && wordCount > 150 && complexityRatio < 15) {
+                // IELTS Band = 6, CELPIP = 8
+                ielts = 6;
+                celpip = 8;
+            }
+            if (totalErrors > 3 || wordCount < 150 || complexityRatio < 5) {
+                // IELTS Band = 5, CELPIP = 6
+                ielts = 5;
+                celpip = 6;
             }
             
             return {

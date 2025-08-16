@@ -3171,7 +3171,7 @@
             const totalErrors = errorCount;
             const complexityRatio = advancedWordPercentage;
             
-            let ielts, celpip;
+            let ielts = 5, celpip = 6; // Default values
             
             // Custom band scoring logic with separate if statements
             if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
@@ -3348,7 +3348,7 @@
             const complexityRatio = currentAnalysisResult?.basicMetrics ? 
                 (currentAnalysisResult.basicMetrics.advancedWordCount / currentAnalysisResult.basicMetrics.wordCount) * 100 : 20;
             
-            let ieltsScore, celpipScore;
+            let ieltsScore = 5, celpipScore = 6; // Default values
             
                          // Custom band scoring logic with separate if statements
              if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
@@ -3417,7 +3417,7 @@
             // Calculate total errors from severity levels
             const totalErrors = severityLevels.high + severityLevels.medium + severityLevels.low;
             
-            let ieltsScore, celpipScore;
+            let ieltsScore = 5, celpipScore = 6; // Default values
             
                          // Custom band scoring logic with separate if statements
              if (totalErrors < 2 && totalWords > 150 && complexityRatio > 30) {
@@ -3504,7 +3504,7 @@
             const wordCount = basicMetrics.wordCount;
             const complexityRatio = (basicMetrics.advancedWordCount / basicMetrics.wordCount) * 100;
             
-            let ieltsScore, celpipScore;
+            let ieltsScore = 5, celpipScore = 6; // Default values
             
             // Custom band scoring logic
             if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
@@ -4101,7 +4101,7 @@
             const totalErrors = errorCount;
             const complexityRatio = advancedWordPercentage;
             
-            let ielts, celpip;
+            let ielts = 5, celpip = 6; // Default values
             
             // Custom band scoring logic with separate if statements
             if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
