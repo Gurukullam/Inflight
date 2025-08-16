@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IELTS General Essay Writing - Task 2 Assessment | GK Foundation</title>
+    <title>IELTS Request Letter Writing - Task 1 Assessment | GK Foundation</title>
     
     <!-- Font Awesome CSS (Embedded for self-contained operation) -->
     <style>
@@ -1183,7 +1183,7 @@
 
     <!-- Small Timer Display (like reading practice) -->
     <div class="small-timer-display" id="timerDisplay">
-        <div class="small-timer-time">40:00</div>
+        <div class="small-timer-time">20:00</div>
     </div>
 
     <!-- Guruvammal Logo as Back Button -->
@@ -1327,9 +1327,9 @@
             <!-- Hero Section - Writing Interface -->
             <div class="hero-section">
                 <h1 class="hero-title">
-                    IELTS Essay Writing Assessment
+                    IELTS Request Letter Writing Assessment
                 </h1>
-                <p class="hero-subtitle">Task 2 - Professional essay analysis powered by Ga Server</p>
+                <p class="hero-subtitle">Task 1 - Professional request letter analysis powered by Ga Server</p>
                 
                 <!-- Timer Start Button (Below subtitle, centered) -->
                 <div class="timer-start-container">
@@ -1341,10 +1341,10 @@
                 <div class="writing-interface">
                     <!-- Writing Prompts -->
                     <div class="prompt-section">
-                        <h3 class="prompt-title">Essay Writing Task:</h3>
+                        <h3 class="prompt-title">Request Letter Writing Task:</h3>
                         <div class="prompt-options">
                             <div class="prompt-option" onclick="selectPrompt(this, 0)">
-                                <strong>Opinion Essay:</strong> "Some people believe that children should be taught to compete, while others think they should be taught to cooperate. Discuss both views and give your own opinion."
+                                <strong>Work Leave Request:</strong> "You would like to take some time off work to attend a training course. Write a letter to your manager. In your letter: describe the training course and why it would be beneficial, explain how your work can be covered while you are away, and request permission to attend the course."
                             </div>
                         </div>
                     </div>
@@ -1354,7 +1354,7 @@
                         <textarea 
                             id="writingText" 
                             class="writing-textarea" 
-                            placeholder="Start writing your essay here... (Minimum 250 words for IELTS Task 2, include clear introduction with thesis statement, body paragraphs with examples and explanations, and strong conclusion). Submit button will be enabled once you reach the 250 words limit."
+                            placeholder="Start writing your request letter here... (Minimum 150 words for IELTS Task 1). STRUCTURE: Give context/background → Make your request clearly → Provide reasons/benefits → Suggest next steps. Be polite and persuasive, show appreciation, make it easy for them to help you. Submit button will be enabled once you reach the 150 words limit."
                             oninput="updateWordCount()"
                             spellcheck="false"
                             autocorrect="off"
@@ -1364,7 +1364,7 @@
 
                     <!-- Controls -->
                     <div class="writing-controls">
-                        <div class="word-count" id="wordCount">Words: 0 | Characters: 0 | Required: 250+</div>
+                        <div class="word-count" id="wordCount">Words: 0 | Characters: 0 | Required: 150+</div>
                         <button class="analyze-btn" id="analyzeBtn" onclick="analyzeWriting()" disabled>
                             Submit
                         </button>
@@ -1393,7 +1393,7 @@
                             Analysis Summary
                         </h3>
                         <div class="feedback-content" id="analysis-summary">
-                            Complete your essay and click "Submit" to see comprehensive feedback.
+                            Complete your writing and click "Submit" to see comprehensive feedback.
                         </div>
                     </div>
                 </div>
@@ -1694,7 +1694,7 @@
                     if (element.tagName === 'DIV' && (id.includes('grid') || id.includes('container'))) {
                         element.innerHTML = ''; // Clear grid/container content
                     } else {
-                        element.innerHTML = '<p style="color: #666; font-style: italic;">Essay analysis results will appear here after clicking "Submit".</p>';
+                        element.innerHTML = '<p style="color: #666; font-style: italic;">Analysis results will appear here after clicking "Submit".</p>';
                     }
                 }
             });
@@ -1861,7 +1861,7 @@
                 
                 // If analysis hasn't been done yet, show a message
                 if (!currentAnalysisResult) {
-                    alert('Please analyze your essay first by clicking "Submit" button.');
+                    alert('Please analyze your writing first by clicking "Submit" button.');
                     return;
                 }
             }
@@ -1893,12 +1893,12 @@
             const characters = text.length;
             const submitBtn = document.getElementById('analyzeBtn');
 
-                        // Update display with IELTS essay writing requirements
-            const requirementStatus = words >= 250 ? '✓' : '⚠️';
-            document.getElementById('wordCount').textContent = `Words: ${words} | Characters: ${characters} | Required: 250+ ${requirementStatus}`;
+            // Update display with IELTS letter writing requirements
+            const requirementStatus = words >= 150 ? '✓' : '⚠️';
+            document.getElementById('wordCount').textContent = `Words: ${words} | Characters: ${characters} | Required: 150+ ${requirementStatus}`;
 
-                    // Enable/disable button based on word count (minimum 250 words for IELTS)
-        if (words >= 250) {
+                    // Enable/disable button based on word count (minimum 150 words for IELTS)
+        if (words >= 150) {
             submitBtn.disabled = false;
             submitBtn.style.opacity = '1';
         } else {
@@ -1906,23 +1906,23 @@
             submitBtn.style.opacity = '0.6';
         }
 
-        // Visual feedback for IELTS essay writing requirements
-        const wordCountElement = document.getElementById('wordCount');
-        if (words >= 250) {
-            wordCountElement.style.color = '#28a745';
-            wordCountElement.style.fontWeight = '600';
-        } else if (words >= 200) {
-            wordCountElement.style.color = '#ffc107';
-            wordCountElement.style.fontWeight = '500';
-        } else {
-            wordCountElement.style.color = '#666';
-            wordCountElement.style.fontWeight = '500';
-        }
+            // Visual feedback for IELTS letter writing requirements
+            const wordCountElement = document.getElementById('wordCount');
+            if (words >= 150) {
+                wordCountElement.style.color = '#28a745';
+                wordCountElement.style.fontWeight = '600';
+            } else if (words >= 100) {
+                wordCountElement.style.color = '#ffc107';
+                wordCountElement.style.fontWeight = '500';
+            } else {
+                wordCountElement.style.color = '#666';
+                wordCountElement.style.fontWeight = '500';
+            }
         }
 
-        // Timer functionality for IELTS essay writing (40 minutes)
+        // Timer functionality for IELTS letter writing (20 minutes)
         let timerInterval = null;
-        let timeRemaining = 40 * 60; // 40 minutes in seconds
+        let timeRemaining = 20 * 60; // 20 minutes in seconds
         let timerRunning = false;
 
         function formatTime(seconds) {
@@ -1936,8 +1936,8 @@
             const timeDisplay = display.querySelector('.small-timer-time');
             timeDisplay.textContent = formatTime(timeRemaining);
             
-            // Add warning class when under 10 minutes
-            if (timeRemaining <= 600) {
+            // Add warning class when under 5 minutes
+            if (timeRemaining <= 300) {
                 display.classList.add('warning');
             } else {
                 display.classList.remove('warning');
@@ -1969,7 +1969,7 @@
         function resetTimer() {
             timerRunning = false;
             clearInterval(timerInterval);
-            timeRemaining = 40 * 60; // Reset to 40 minutes
+            timeRemaining = 20 * 60; // Reset to 20 minutes
             
             const startBtn = document.getElementById('startTimerBtn');
             
@@ -1981,7 +1981,7 @@
         }
 
         function timeUpAlert() {
-            alert('⏰ Time\'s up! You have completed the 40-minute IELTS General Writing Task 2 time limit.\n\nRecommendation: Submit your essay now to see how you performed within the time constraint.');
+            alert('⏰ Time\'s up! You have completed the 20-minute IELTS General Writing Task 1 time limit.\n\nRecommendation: Submit your letter now to see how you performed within the time constraint.');
             
             // Auto-trigger analysis popup removed - users can submit manually when ready
         }
@@ -1994,7 +1994,7 @@
                 clearInterval(timerInterval);
             }
             // Reset timer to initial state
-            timeRemaining = 40 * 60; // Reset to 40 minutes
+            timeRemaining = 20 * 60; // Reset to 20 minutes
             const startBtn = document.getElementById('startTimerBtn');
             if (startBtn) {
                 startBtn.style.display = 'flex';
@@ -2006,12 +2006,12 @@
             const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
 
             if (text.length === 0) {
-                alert('Please write your essay before submitting for analysis.');
+                alert('Please write your letter before submitting for analysis.');
                 return;
             }
 
-            if (wordCount < 250) {
-                alert('Please write at least 250 words to meet IELTS Task 2 essay writing requirements before submitting for analysis.');
+            if (wordCount < 150) {
+                alert('Please write at least 150 words to meet IELTS Task 1 letter writing requirements before submitting for analysis.');
                 return;
             }
 
@@ -2097,7 +2097,7 @@
                 const analysisResult = await detectGrammarErrors(text);
                 
                 if (!analysisResult) {
-                    throw new Error('Ga Server analysis failed to return results');
+                    throw new Error('API analysis failed to return results');
                 }
                 
                 // Calculate basic metrics
@@ -2913,13 +2913,13 @@
                 
                 // Provide detailed error information
                 if (response.status === 400) {
-                    throw new Error(`Ga Server error 400 (Bad Request): ${errorText}. This usually means invalid parameters or missing text data.`);
+                    throw new Error(`LanguageTool API error 400 (Bad Request): ${errorText}. This usually means invalid parameters or missing text data.`);
                 } else if (response.status === 403) {
-                    throw new Error(`Ga Server error 403 (Forbidden): ${errorText}. Access denied - possibly due to rate limiting.`);
+                    throw new Error(`LanguageTool API error 403 (Forbidden): ${errorText}. Access denied - possibly due to rate limiting.`);
                 } else if (response.status === 429) {
-                    throw new Error(`Ga Server error 429 (Too Many Requests): ${errorText}. Rate limit exceeded.`);
+                    throw new Error(`LanguageTool API error 429 (Too Many Requests): ${errorText}. Rate limit exceeded.`);
                 } else {
-                    throw new Error(`Ga Server error ${response.status}: ${errorText}`);
+                    throw new Error(`LanguageTool API error ${response.status}: ${errorText}`);
                 }
             }
 
@@ -2940,7 +2940,7 @@
             }
             
             if (!data || typeof data !== 'object') {
-                throw new Error('Invalid server response format from Ga Server');
+                throw new Error('Invalid API response format from LanguageTool server');
             }
             
             return analyzeLanguageToolResponse(data, text);
@@ -3039,7 +3039,7 @@
                 count: errors.length,
                 errors: errors,
                 errorCategories: errorCategories,
-                source: 'Ga Server',
+                source: 'Open Source LanguageTool API',
                 
                 // Detailed metrics
                 detailedAnalysis: {
@@ -3339,7 +3339,7 @@
                 errors: matches.map(m => m.message),
                 detailedErrors: matches,
                 scores: scores,
-                source: 'Ga Server (Comprehensive)',
+                source: 'LanguageTool API (Comprehensive)',
                 apiData: data
             };
         }
