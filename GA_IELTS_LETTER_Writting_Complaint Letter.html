@@ -3172,15 +3172,18 @@
                 // Band 8 (CELPIP 10): Total Error < 2 AND Word count > 150 AND Complexity > 30%
                 ielts = 8;
                 celpip = 10;
-            } else if (totalErrors === 2 && wordCount > 150 && complexityRatio < 25) {
+            }
+            if (totalErrors === 2 && wordCount > 150 && complexityRatio < 25) {
                 // Band 7 (CELPIP 9): Total Error = 2 AND Word count > 150 AND Complexity < 25%
                 ielts = 7;
                 celpip = 9;
-            } else if (totalErrors === 3 && wordCount > 150 && complexityRatio < 15) {
+            }
+            if (totalErrors === 3 && wordCount > 150 && complexityRatio < 15) {
                 // Band 6 (CELPIP 8): Total Error = 3 AND Word count > 150 AND Complexity < 15%
                 ielts = 6;
                 celpip = 8;
-            } else if (totalErrors > 3 || wordCount < 150 || complexityRatio < 5) {
+            }
+            if (totalErrors > 3 || wordCount < 150 || complexityRatio < 5) {
                 // Band 5 (CELPIP 6): Total Error > 3 OR Word count < 150 OR Complexity < 5%
                 ielts = 5;
                 celpip = 6;
@@ -3510,16 +3513,19 @@
             if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
                 // Band 8 (CELPIP 10): Total Error < 2 AND Word count > 150 AND Complexity > 30%
                 ieltsScore = 8;
-                celpipScore = 10;
-            } else if (totalErrors === 2 && wordCount > 150 && complexityRatio < 25) {
+                                 celpipScore = 10;
+             }
+             if (totalErrors === 2 && wordCount > 150 && complexityRatio < 25) {
                 // Band 7 (CELPIP 9): Total Error = 2 AND Word count > 150 AND Complexity < 25%
                 ieltsScore = 7;
-                celpipScore = 9;
-            } else if (totalErrors === 3 && wordCount > 150 && complexityRatio < 15) {
+                                 celpipScore = 9;
+             }
+             if (totalErrors === 3 && wordCount > 150 && complexityRatio < 15) {
                 // Band 6 (CELPIP 8): Total Error = 3 AND Word count > 150 AND Complexity < 15%
                 ieltsScore = 6;
-                celpipScore = 8;
-            } else if (totalErrors > 3 || wordCount < 150 || complexityRatio < 5) {
+                                 celpipScore = 8;
+             }
+             if (totalErrors > 3 || wordCount < 150 || complexityRatio < 5) {
                 // Band 5 (CELPIP 6): Total Error > 3 OR Word count < 150 OR Complexity < 5%
                 ieltsScore = 5;
                 celpipScore = 6;
