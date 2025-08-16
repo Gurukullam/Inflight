@@ -520,6 +520,10 @@
             backdrop-filter: blur(10px);
             resize: vertical;
             transition: all 0.3s ease;
+            /* Disable all text highlighting and corrections */
+            text-decoration: none !important;
+            -webkit-text-decoration-skip: none;
+            text-decoration-skip-ink: none;
         }
 
         .writing-textarea:focus {
@@ -1365,6 +1369,11 @@
                             spellcheck="false"
                             autocorrect="off"
                             autocapitalize="off"
+                            autocomplete="off"
+                            data-gramm="false"
+                            data-gramm_editor="false"
+                            data-enable-grammarly="false"
+                            data-ms-editor="false"
                         ></textarea>
                     </div>
 
@@ -4338,10 +4347,15 @@
                 clbScore = 8;
                 console.log('✅ BAND 6.5: Total Errors = 2, Word Count >= 150');
             }
-            else if (totalErrors > 2 && wordCount >= 150) {
+            else if (totalErrors === 3 && wordCount >= 150) {
                 ieltsScore = 6;
                 clbScore = 7;
-                console.log('✅ BAND 6: Total Errors > 2, Word Count >= 150');
+                console.log('✅ BAND 6: Total Errors = 3, Word Count >= 150');
+            }
+            else if (totalErrors > 3 && wordCount >= 150) {
+                ieltsScore = 5.5;
+                clbScore = 6;
+                console.log('✅ BAND 5.5: Total Errors > 3, Word Count >= 150');
             }
             else if (wordCount >= 100 && wordCount <= 149) {
                 ieltsScore = 5.5;
