@@ -2247,16 +2247,11 @@
             let scores;
 
             console.log('🖥️ DEBUG - updateScoresSection called');
-            console.log('   result.scores exists:', !!result.scores);
-            console.log('   result.scores value:', result.scores);
+            console.log('   Using NEW Analysis Summary based scoring');
 
-            if (result.scores) {
-                scores = result.scores; // API-calculated scores
-                console.log('✅ Using result.scores (custom logic):', scores);
-            } else {
-                scores = calculateBandScores(result, result.basicMetrics); // Fallback calculation
-                console.log('⚠️ Using fallback calculateBandScores:', scores);
-            }
+            // ALWAYS use Analysis Summary values for consistent scoring
+            scores = calculateBandsFromAnalysisSummary();
+            console.log('✅ Using Analysis Summary based scoring:', scores);
 
             const scoreContainer = document.getElementById('score-container');
             scoreContainer.innerHTML = `
@@ -4294,6 +4289,59 @@
 
         // Add test button (for debugging)
         window.testAPI = testAPI;
+
+        // Calculate bands using ONLY Analysis Summary displayed values
+        function calculateBandsFromAnalysisSummary() {
+            const result = currentAnalysisResult;
+            const metrics = result.basicMetrics;
+            
+            // Extract the EXACT values displayed in Analysis Summary
+            const wordCount = metrics.wordCount;                                    // Word Count shown
+            const totalErrors = result.count;                                       // Total Errors shown  
+            const complexityPercentage = result.detailedAnalysis.complexityRatio;   // Advanced Words % shown
+            
+            console.log('📊 ANALYSIS SUMMARY VALUES:');
+            console.log('   Word Count:', wordCount);
+            console.log('   Total Errors:', totalErrors);
+            console.log('   Complexity %:', complexityPercentage);
+            
+            let ieltsScore, celpipScore;
+            
+            // Apply user's exact logic using Analysis Summary values
+            if (totalErrors < 2 && wordCount > 150 && complexityPercentage > 25) {
+                ieltsScore = 8;
+                celpipScore = 10;
+                console.log('✅ BAND 8: Total Errors < 2, Word Count > 150, Complexity > 25%');
+            }
+            else if (totalErrors === 2 && wordCount > 150 && complexityPercentage < 20) {
+                ieltsScore = 7;
+                celpipScore = 9;
+                console.log('✅ BAND 7: Total Errors = 2, Word Count > 150, Complexity < 20%');
+            }
+            else if (totalErrors === 3 && wordCount > 150 && complexityPercentage < 15) {
+                ieltsScore = 6;
+                celpipScore = 8;
+                console.log('✅ BAND 6: Total Errors = 3, Word Count > 150, Complexity < 15%');
+            }
+            else if (totalErrors > 3 || wordCount < 150 || complexityPercentage < 5) {
+                ieltsScore = 5;
+                celpipScore = 6;
+                console.log('✅ BAND 5: Total Errors > 3 OR Word Count < 150 OR Complexity < 5%');
+            }
+            else {
+                ieltsScore = "Analyse Summary";
+                celpipScore = "Analyse Summary";
+                console.log('🔍 ANALYSE SUMMARY: Conditions do not match standard band criteria');
+            }
+            
+            console.log('🎯 FINAL BANDS FROM ANALYSIS SUMMARY: IELTS =', ieltsScore, ', CELPIP =', celpipScore);
+            
+            return {
+                ielts: ieltsScore,
+                celpip: celpipScore,
+                source: 'Analysis Summary Values'
+            };
+        }
 
     </script>
 </body>
