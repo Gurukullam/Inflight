@@ -3213,7 +3213,7 @@
             return {
                 ielts: ielts,
                 celpip: celpip,
-                baseScore: parseFloat(enhancedScore.toFixed(1)),
+                baseScore: ((ielts / 9) * 100).toFixed(1),
                 factors: {
                     errorRate: parseFloat(errorRate.toFixed(2)),
                     severityAdjustedErrorRate: parseFloat(severityAdjustedErrorRate.toFixed(2)),

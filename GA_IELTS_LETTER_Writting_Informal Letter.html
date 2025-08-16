@@ -4157,14 +4157,8 @@
                 Math.max(0, errorRate - 2) * 5 // Allow up to 2% error rate
             );
             
-            // Apply positive factors
-            const enhancedScore = Math.min(100, 
-                baseScore * 0.6 + 
-                vocabularyScore * 0.15 + 
-                sentenceComplexityScore * 0.1 + 
-                readabilityScoreAdjusted * 0.1 + 
-                lengthScore * 0.05
-            );
+            // Use custom scoring logic instead of mathematical calculation
+            const enhancedScore = (ielts / 9) * 100;
             
             // Use ONLY custom logic - no mathematical overrides
             let ielts = 5, celpip = 6; // Default values
