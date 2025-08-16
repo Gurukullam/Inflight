@@ -3340,29 +3340,38 @@
             
             let ieltsScore, celpipScore;
             
-            // Check if any single error type has more than 2 errors
-            if (grammarCount > 2 || spellingCount > 2 || punctuationCount > 2 || styleCount > 2) {
-                ieltsScore = 5;
-                celpipScore = 6;
-                console.log('⚠️ One or more error types exceed 2 errors - IELTS: 5, CELPIP: 6');
-            }
-            // Check if total errors is less than 3 and not equal to 0
-            else if (totalErrors < 3 && totalErrors > 0) {
-                ieltsScore = 6;
-                celpipScore = 7;
-                console.log('✅ Total errors less than 3 (but not zero) - IELTS: 6, CELPIP: 7');
-            }
-            // Check if all error types have 0 count
-            else if (totalErrors === 0) {
+            // We need word count and complexity for custom logic - use global variables if available
+            const wordCount = currentAnalysisResult?.basicMetrics?.wordCount || 150;
+            const complexityRatio = currentAnalysisResult?.basicMetrics ? 
+                (currentAnalysisResult.basicMetrics.advancedWordCount / currentAnalysisResult.basicMetrics.wordCount) * 100 : 20;
+            
+            // Custom band scoring logic
+            if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
+                // Band 8 (CELPIP 10): Total Error < 2 AND Word count > 150 AND Complexity > 30%
                 ieltsScore = 8;
                 celpipScore = 10;
-                console.log('🎉 No errors found - IELTS: 8, CELPIP: 10');
-            }
-            // Fallback case (total errors >= 3 but no single type > 2)
-            else {
+                console.log('⚠️ One or more error types exceed 2 errors - IELTS: 5, CELPIP: 6');
+                console.log('🎉 Band 8: Low errors, good length, high complexity');
+            } else if (totalErrors === 2 && wordCount > 150 && complexityRatio < 25) {
+                // Band 7 (CELPIP 9): Total Error = 2 AND Word count > 150 AND Complexity < 25%
+                ieltsScore = 7;
+                celpipScore = 9;
+                console.log('✅ Band 7: 2 errors, good length, moderate complexity');
+            } else if (totalErrors === 3 && wordCount > 150 && complexityRatio < 15) {
+                // Band 6 (CELPIP 8): Total Error = 3 AND Word count > 150 AND Complexity < 15%
+                ieltsScore = 6;
+                celpipScore = 8;
+                console.log('📝 Band 6: 3 errors, good length, basic complexity');
+            } else if (totalErrors > 3 || wordCount < 150 || complexityRatio < 5) {
+                // Band 5 (CELPIP 6): Total Error > 3 OR Word count < 150 OR Complexity < 5%
                 ieltsScore = 5;
                 celpipScore = 6;
-                console.log('⚠️ Multiple errors across types - IELTS: 5, CELPIP: 6');
+                console.log('⚠️ Band 5: High errors OR short text OR very low complexity');
+            } else {
+                // Default fallback for edge cases
+                ieltsScore = 6;
+                celpipScore = 8;
+                console.log('📋 Band 6: Default fallback for edge cases');
             }
             
             console.log(`📈 Final scores: IELTS ${ieltsScore}/9, CELPIP ${celpipScore}/12`);

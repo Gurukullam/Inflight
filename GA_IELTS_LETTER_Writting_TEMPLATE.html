@@ -3329,9 +3329,9 @@
 
 
 
-        // Calculate IELTS and CELPIP scores based on error type analysis
+        // Calculate IELTS and CELPIP scores using custom criteria
         function calculateErrorBasedScores(errorCategories) {
-            console.log('📊 Calculating scores based on error type analysis...');
+            console.log('📊 Calculating scores using custom band criteria...');
             
             // Extract counts for the specific error types
             const grammarCount = (errorCategories.Grammar && Array.isArray(errorCategories.Grammar)) ? errorCategories.Grammar.length : 0;
@@ -3344,34 +3344,42 @@
             // Calculate total errors across all types
             const totalErrors = grammarCount + spellingCount + punctuationCount + styleCount;
             
+            // We need word count and complexity for custom logic - use global variables if available
+            const wordCount = currentAnalysisResult?.basicMetrics?.wordCount || 150;
+            const complexityRatio = currentAnalysisResult?.basicMetrics ? 
+                (currentAnalysisResult.basicMetrics.advancedWordCount / currentAnalysisResult.basicMetrics.wordCount) * 100 : 20;
+            
             let ieltsScore, celpipScore;
             
-            // Check if any single error type has more than 2 errors
-            if (grammarCount > 2 || spellingCount > 2 || punctuationCount > 2 || styleCount > 2) {
-                ieltsScore = 5;
-                celpipScore = 6;
-                console.log('⚠️ One or more error types exceed 2 errors - IELTS: 5, CELPIP: 6');
-            }
-            // Check if total errors is less than 3 and not equal to 0
-            else if (totalErrors < 3 && totalErrors > 0) {
-                ieltsScore = 6;
-                celpipScore = 7;
-                console.log('✅ Total errors less than 3 (but not zero) - IELTS: 6, CELPIP: 7');
-            }
-            // Check if all error types have 0 count
-            else if (totalErrors === 0) {
+            // Custom band scoring logic
+            if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
+                // Band 8 (CELPIP 10): Total Error < 2 AND Word count > 150 AND Complexity > 30%
                 ieltsScore = 8;
                 celpipScore = 10;
-                console.log('🎉 No errors found - IELTS: 8, CELPIP: 10');
-            }
-            // Fallback case (total errors >= 3 but no single type > 2)
-            else {
+                console.log('🎉 Band 8: Low errors, good length, high complexity');
+            } else if (totalErrors === 2 && wordCount > 150 && complexityRatio < 25) {
+                // Band 7 (CELPIP 9): Total Error = 2 AND Word count > 150 AND Complexity < 25%
+                ieltsScore = 7;
+                celpipScore = 9;
+                console.log('✅ Band 7: 2 errors, good length, moderate complexity');
+            } else if (totalErrors === 3 && wordCount > 150 && complexityRatio < 15) {
+                // Band 6 (CELPIP 8): Total Error = 3 AND Word count > 150 AND Complexity < 15%
+                ieltsScore = 6;
+                celpipScore = 8;
+                console.log('📝 Band 6: 3 errors, good length, basic complexity');
+            } else if (totalErrors > 3 || wordCount < 150 || complexityRatio < 5) {
+                // Band 5 (CELPIP 6): Total Error > 3 OR Word count < 150 OR Complexity < 5%
                 ieltsScore = 5;
                 celpipScore = 6;
-                console.log('⚠️ Multiple errors across types - IELTS: 5, CELPIP: 6');
+                console.log('⚠️ Band 5: High errors OR short text OR very low complexity');
+            } else {
+                // Default fallback for edge cases
+                ieltsScore = 6;
+                celpipScore = 8;
+                console.log('📋 Band 6: Default fallback for edge cases');
             }
             
-            console.log(`📈 Final scores: IELTS ${ieltsScore}/9, CELPIP ${celpipScore}/12`);
+            console.log(`📈 Final custom scores: IELTS ${ieltsScore}/9, CELPIP ${celpipScore}/12`);
             
             return {
                 ielts: ieltsScore,
@@ -3387,7 +3395,7 @@
             };
         }
 
-        // Calculate simplified IELTS and CELPIP scores from metrics
+        // Calculate IELTS and CELPIP scores using custom criteria
         function calculateSimplifiedScores(metrics) {
             // Ensure metrics exist and have required properties
             if (!metrics || typeof metrics !== 'object') {
@@ -3395,64 +3403,60 @@
                 metrics = {
                     errorRate: 0,
                     severityLevels: { high: 0, medium: 0, low: 0 },
-                    totalWords: 100,
+                    totalWords: 150,
                     avgWordsPerSentence: 15,
-                    complexityRatio: 10
+                    complexityRatio: 20
                 };
             }
             
             const { 
                 errorRate = 0, 
                 severityLevels = { high: 0, medium: 0, low: 0 }, 
-                totalWords = 100, 
+                totalWords = 150, 
                 avgWordsPerSentence = 15, 
-                complexityRatio = 10 
+                complexityRatio = 20 
             } = metrics;
             
-            // Base score calculation
-            let baseScore = 9; // Start with perfect IELTS score
-            
-            // Deduct based on error rate
-            if (errorRate > 15) baseScore -= 4;
-            else if (errorRate > 10) baseScore -= 3;
-            else if (errorRate > 5) baseScore -= 2;
-            else if (errorRate > 2) baseScore -= 1;
-            else if (errorRate > 1) baseScore -= 0.5;
-            
-            // Adjust based on error severity
+            // Calculate total errors from severity levels
             const totalErrors = severityLevels.high + severityLevels.medium + severityLevels.low;
-            if (totalErrors > 0) {
-                const severityImpact = (severityLevels.high * 0.3 + severityLevels.medium * 0.2 + severityLevels.low * 0.1) / totalErrors;
-                baseScore -= severityImpact;
+            
+            let ieltsScore, celpipScore;
+            
+            // Custom band scoring logic
+            if (totalErrors < 2 && totalWords > 150 && complexityRatio > 30) {
+                // Band 8 (CELPIP 10): Total Error < 2 AND Word count > 150 AND Complexity > 30%
+                ieltsScore = 8;
+                celpipScore = 10;
+            } else if (totalErrors === 2 && totalWords > 150 && complexityRatio < 25) {
+                // Band 7 (CELPIP 9): Total Error = 2 AND Word count > 150 AND Complexity < 25%
+                ieltsScore = 7;
+                celpipScore = 9;
+            } else if (totalErrors === 3 && totalWords > 150 && complexityRatio < 15) {
+                // Band 6 (CELPIP 8): Total Error = 3 AND Word count > 150 AND Complexity < 15%
+                ieltsScore = 6;
+                celpipScore = 8;
+            } else if (totalErrors > 3 || totalWords < 150 || complexityRatio < 5) {
+                // Band 5 (CELPIP 6): Total Error > 3 OR Word count < 150 OR Complexity < 5%
+                ieltsScore = 5;
+                celpipScore = 6;
+            } else {
+                // Default fallback for edge cases
+                ieltsScore = 6;
+                celpipScore = 8;
             }
-            
-            // Adjust for text length (bonus for longer texts)
-            if (totalWords >= 300) baseScore += 0.5;
-            else if (totalWords < 150) baseScore -= 0.5;
-            
-            // Adjust for sentence complexity
-            if (avgWordsPerSentence < 10) baseScore -= 0.5;
-            else if (avgWordsPerSentence > 25) baseScore -= 0.3;
-            else if (avgWordsPerSentence >= 15 && avgWordsPerSentence <= 20) baseScore += 0.2;
-            
-            // Adjust for vocabulary complexity
-            if (complexityRatio >= 25) baseScore += 0.3;
-            else if (complexityRatio < 10) baseScore -= 0.3;
-            
-            // Ensure score is within bounds
-            const ieltsScore = Math.max(1, Math.min(9, Math.round(baseScore * 2) / 2)); // Round to nearest 0.5
-            const celpipScore = Math.max(1, Math.min(12, Math.round(ieltsScore * 1.33))); // Convert to CELPIP scale
             
             return {
                 ielts: ieltsScore,
                 celpip: celpipScore,
-                baseScore: baseScore,
+                baseScore: (ieltsScore / 9) * 100,
                 factors: {
-                    'Error Rate Impact': errorRate > 2 ? 'Significant deduction' : 'Minimal impact',
-                    'Severity Distribution': severityLevels.high > 0 ? 'High-severity errors present' : 'No critical errors',
-                    'Text Length': totalWords >= 300 ? 'Length bonus applied' : totalWords < 150 ? 'Length penalty applied' : 'Standard length',
-                    'Sentence Complexity': avgWordsPerSentence >= 15 && avgWordsPerSentence <= 20 ? 'Optimal complexity' : 'Room for improvement',
-                    'Vocabulary Level': complexityRatio >= 25 ? 'Advanced vocabulary bonus' : 'Consider using more sophisticated words'
+                    'Total Errors': totalErrors,
+                    'Word Count': totalWords > 150 ? 'Above minimum' : 'Below minimum',
+                    'Text Complexity': complexityRatio > 30 ? 'High complexity' : complexityRatio > 15 ? 'Moderate complexity' : 'Basic complexity',
+                    'Applied Rule': totalErrors < 2 && totalWords > 150 && complexityRatio > 30 ? 'Band 8 Rule' :
+                                   totalErrors === 2 && totalWords > 150 && complexityRatio < 25 ? 'Band 7 Rule' :
+                                   totalErrors === 3 && totalWords > 150 && complexityRatio < 15 ? 'Band 6 Rule' :
+                                   totalErrors > 3 || totalWords < 150 || complexityRatio < 5 ? 'Band 5 Rule' : 'Default Rule'
                 }
             };
         }
@@ -4097,95 +4101,51 @@
         }
         
         function calculateOfflineScores(wordCount, errorCount, errorCategories, readabilityScore, advancedWordPercentage, averageWordsPerSentence) {
-            // Comprehensive scoring algorithm based on multiple factors
+            // Custom band scoring based on specific criteria
             
-            // Error rate impact (lower is better)
-            const errorRate = wordCount > 0 ? (errorCount / wordCount) * 100 : 0;
-            const grammarErrorWeight = errorCategories['Grammar'] * 3; // Grammar errors are more significant
-            const spellingErrorWeight = errorCategories['Spelling'] * 2;
-            const styleErrorWeight = errorCategories['Style'] * 1;
+            const totalErrors = errorCount;
+            const complexityRatio = advancedWordPercentage;
             
-            // Vocabulary sophistication (higher is better)
-            const vocabularyScore = Math.min(advancedWordPercentage * 2, 100);
-            
-            // Sentence complexity (moderate complexity is better)
-            let sentenceComplexityScore = 100;
-            if (averageWordsPerSentence < 10) {
-                sentenceComplexityScore = 60; // Too simple
-            } else if (averageWordsPerSentence > 25) {
-                sentenceComplexityScore = 70; // Too complex
-            }
-            
-            // Readability (60-70 is ideal for most writing)
-            let readabilityScoreAdjusted = 100;
-            if (readabilityScore < 30) {
-                readabilityScoreAdjusted = 40; // Very difficult
-            } else if (readabilityScore > 80) {
-                readabilityScoreAdjusted = 70; // Too simple
-            }
-            
-            // Word count consideration
-            let lengthScore = 100;
-            if (wordCount < 150) {
-                lengthScore = 60; // Too short for comprehensive assessment
-            } else if (wordCount > 500) {
-                lengthScore = 90; // Good length
-            }
-            
-            // Calculate base score (0-100)
-            const baseScore = Math.max(0, 100 - 
-                (grammarErrorWeight + spellingErrorWeight + styleErrorWeight) - 
-                Math.max(0, errorRate - 2) * 5 // Allow up to 2% error rate
-            );
-            
-            // Apply positive factors
-            const enhancedScore = Math.min(100, 
-                baseScore * 0.6 + 
-                vocabularyScore * 0.15 + 
-                sentenceComplexityScore * 0.1 + 
-                readabilityScoreAdjusted * 0.1 + 
-                lengthScore * 0.05
-            );
-            
-            // Convert to IELTS (1-9) and CELPIP (1-12) scales
             let ielts, celpip;
             
-            if (enhancedScore >= 95) {
-                ielts = 9; celpip = 12;
-            } else if (enhancedScore >= 90) {
-                ielts = 8.5; celpip = 11;
-            } else if (enhancedScore >= 85) {
-                ielts = 8; celpip = 10;
-            } else if (enhancedScore >= 80) {
-                ielts = 7.5; celpip = 9;
-            } else if (enhancedScore >= 75) {
-                ielts = 7; celpip = 8;
-            } else if (enhancedScore >= 70) {
-                ielts = 6.5; celpip = 7;
-            } else if (enhancedScore >= 65) {
-                ielts = 6; celpip = 6;
-            } else if (enhancedScore >= 60) {
-                ielts = 5.5; celpip = 5;
-            } else if (enhancedScore >= 55) {
-                ielts = 5; celpip = 4;
-            } else if (enhancedScore >= 50) {
-                ielts = 4.5; celpip = 3;
-            } else if (enhancedScore >= 40) {
-                ielts = 4; celpip = 2;
+            // Custom band scoring logic
+            if (totalErrors < 2 && wordCount > 150 && complexityRatio > 30) {
+                // Band 8 (CELPIP 10): Total Error < 2 AND Word count > 150 AND Complexity > 30%
+                ielts = 8;
+                celpip = 10;
+            } else if (totalErrors === 2 && wordCount > 150 && complexityRatio < 25) {
+                // Band 7 (CELPIP 9): Total Error = 2 AND Word count > 150 AND Complexity < 25%
+                ielts = 7;
+                celpip = 9;
+            } else if (totalErrors === 3 && wordCount > 150 && complexityRatio < 15) {
+                // Band 6 (CELPIP 8): Total Error = 3 AND Word count > 150 AND Complexity < 15%
+                ielts = 6;
+                celpip = 8;
+            } else if (totalErrors > 3 || wordCount < 150 || complexityRatio < 5) {
+                // Band 5 (CELPIP 6): Total Error > 3 OR Word count < 150 OR Complexity < 5%
+                ielts = 5;
+                celpip = 6;
             } else {
-                ielts = 3; celpip = 1;
+                // Default fallback for edge cases
+                ielts = 6;
+                celpip = 8;
             }
+            
+            const baseScore = (ielts / 9) * 100;
             
             return {
                 ielts: ielts,
                 celpip: celpip,
-                baseScore: parseFloat(enhancedScore.toFixed(1)),
+                baseScore: parseFloat(baseScore.toFixed(1)),
                 factors: {
-                    errorRate: parseFloat(errorRate.toFixed(2)),
-                    vocabularyScore: parseFloat(vocabularyScore.toFixed(1)),
-                    sentenceComplexityScore: parseFloat(sentenceComplexityScore.toFixed(1)),
-                    readabilityScore: parseFloat(readabilityScoreAdjusted.toFixed(1)),
-                    lengthScore: parseFloat(lengthScore.toFixed(1))
+                    totalErrors: totalErrors,
+                    wordCount: wordCount,
+                    complexityRatio: parseFloat(complexityRatio.toFixed(1)),
+                    appliedRule: totalErrors < 2 && wordCount > 150 && complexityRatio > 30 ? 'Band 8 (Excellent)' :
+                                totalErrors === 2 && wordCount > 150 && complexityRatio < 25 ? 'Band 7 (Good)' :
+                                totalErrors === 3 && wordCount > 150 && complexityRatio < 15 ? 'Band 6 (Competent)' :
+                                totalErrors > 3 || wordCount < 150 || complexityRatio < 5 ? 'Band 5 (Modest)' : 'Band 6 (Default)',
+                    criteriaCheck: `Errors: ${totalErrors}, Words: ${wordCount}, Complexity: ${complexityRatio.toFixed(1)}%`
                 }
             };
         }
