@@ -3211,14 +3211,14 @@
             return {
                 ielts: ielts,
                 celpip: celpip,
-                baseScore: parseFloat(enhancedScore.toFixed(1)),
+                baseScore: parseFloat(((ielts / 9) * 100).toFixed(1)),
                 factors: {
-                    errorRate: parseFloat(errorRate.toFixed(2)),
-                    severityAdjustedErrorRate: parseFloat(severityAdjustedErrorRate.toFixed(2)),
-                    vocabularyScore: parseFloat(vocabularyScore.toFixed(1)),
-                    sentenceComplexityScore: parseFloat(sentenceComplexityScore.toFixed(1)),
-                    readabilityScore: parseFloat(readabilityScoreAdjusted.toFixed(1)),
-                    lengthScore: parseFloat(lengthScore.toFixed(1))
+                    errorRate: parseFloat((errorCount / wordCount * 100).toFixed(2)),
+                    severityAdjustedErrorRate: parseFloat((errorCount / wordCount * 100).toFixed(2)),
+                    vocabularyScore: parseFloat((advancedWordPercentage || 20).toFixed(1)),
+                    sentenceComplexityScore: parseFloat((averageWordsPerSentence || 15).toFixed(1)),
+                    readabilityScore: parseFloat((readabilityScore || 50).toFixed(1)),
+                    lengthScore: parseFloat((wordCount > 150 ? 100 : (wordCount / 150) * 100).toFixed(1))
                 }
             };
         }
@@ -4188,13 +4188,13 @@
             return {
                 ielts: ielts,
                 celpip: celpip,
-                baseScore: parseFloat(enhancedScore.toFixed(1)),
+                baseScore: parseFloat(((ielts / 9) * 100).toFixed(1)),
                 factors: {
-                    errorRate: parseFloat(errorRate.toFixed(2)),
-                    vocabularyScore: parseFloat(vocabularyScore.toFixed(1)),
-                    sentenceComplexityScore: parseFloat(sentenceComplexityScore.toFixed(1)),
-                    readabilityScore: parseFloat(readabilityScoreAdjusted.toFixed(1)),
-                    lengthScore: parseFloat(lengthScore.toFixed(1))
+                    errorRate: parseFloat((errorCount / wordCount * 100).toFixed(2)),
+                    vocabularyScore: parseFloat((advancedWordPercentage || 20).toFixed(1)),
+                    sentenceComplexityScore: parseFloat((averageWordsPerSentence || 15).toFixed(1)),
+                    readabilityScore: parseFloat((readabilityScore || 50).toFixed(1)),
+                    lengthScore: parseFloat((wordCount > 150 ? 100 : (wordCount / 150) * 100).toFixed(1))
                 }
             };
         }
