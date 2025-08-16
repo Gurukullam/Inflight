@@ -3356,7 +3356,7 @@
             // Calculate total errors across all types
             const totalErrors = grammarCount + spellingCount + punctuationCount + styleCount;
             
-            let ieltsScore, celpipScore;
+            let ieltsScore = 5, celpipScore = 6; // Default values
             
             // We need word count and complexity for custom logic - use global variables if available
             const wordCount = currentAnalysisResult?.basicMetrics?.wordCount || 150;
