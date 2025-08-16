@@ -1238,7 +1238,7 @@
                     <div class="item-title">Analysis Summary<span class="item-badge badge-new">Live</span></div>
                 </div>
                 <div class="menu-item" onclick="navigateToSection('scores')">
-                    <div class="item-title">Band Scores<span class="item-badge badge-score">IELTS/CELPIP</span></div>
+                    <div class="item-title">Band Scores<span class="item-badge badge-score">IELTS/CLB</span></div>
                 </div>
             </div>
 
@@ -2262,8 +2262,8 @@
                 </div>
 
                 <div class="score-card">
-                    <div class="score-label">CELPIP Writing</div>
-                    <div class="score-value">${scores.celpip}</div>
+                    <div class="score-label">CLB Writing</div>
+                    <div class="score-value">${scores.clb}</div>
                     <div class="score-range">Level 1-12</div>
                 </div>
             `;
@@ -2486,7 +2486,7 @@
             let explanation = `<div class="feedback-category">`;
             explanation += `<h4><i class="fas fa-medal"></i> Score Breakdown</h4>`;
             explanation += `<p><strong>IELTS ${scores.ielts}/9:</strong> ${getIELTSDescription(scores.ielts)}</p>`;
-            explanation += `<p><strong>CELPIP ${scores.celpip}/12:</strong> ${getCELPIPDescription(scores.celpip)}</p>`;
+            explanation += `<p><strong>CLB ${scores.clb}/12:</strong> ${getCLBDescription(scores.clb)}</p>`;
             explanation += `</div>`;
 
             if (result.scores && result.scores.factors) {
@@ -2518,21 +2518,21 @@
             return descriptions[score] || "Score assessment";
         }
 
-        // CELPIP score descriptions
-        function getCELPIPDescription(score) {
+        // CLB score descriptions
+        function getCLBDescription(score) {
             const descriptions = {
-                12: "Advanced High - Superior command",
-                11: "Advanced Mid - Advanced command",
-                10: "Advanced Low - Advanced command",
-                9: "High Intermediate - Good command",
-                8: "Mid Intermediate - Adequate command",
-                7: "Low Intermediate - Developing command",
-                6: "High Beginner - Basic command",
-                5: "Mid Beginner - Limited command",
-                4: "Low Beginner - Very limited command",
-                3: "Below Beginner - Minimal command",
-                2: "Below Beginner - Extremely limited",
-                1: "Below Beginner - No functional ability"
+                12: "CLB 12 - Advanced proficiency",
+                11: "CLB 11 - Advanced proficiency", 
+                10: "CLB 10 - Advanced proficiency",
+                9: "CLB 9 - High intermediate proficiency",
+                8: "CLB 8 - High intermediate proficiency",
+                7: "CLB 7 - Intermediate proficiency",
+                6: "CLB 6 - Intermediate proficiency",
+                5: "CLB 5 - Initial intermediate proficiency",
+                4: "CLB 4 - Basic proficiency",
+                3: "CLB 3 - Basic proficiency",
+                2: "CLB 2 - Basic proficiency",
+                1: "CLB 1 - Basic proficiency"
             };
             return descriptions[score] || "Score assessment";
         }
@@ -4305,40 +4305,65 @@
             console.log('   Total Errors:', totalErrors);
             console.log('   Complexity %:', complexityPercentage);
             
-            let ieltsScore, celpipScore;
+            let ieltsScore, clbScore;
             
-            // Apply user's exact logic using Analysis Summary values
-            if (totalErrors < 2 && wordCount > 150 && complexityPercentage > 25) {
+            // Apply user's updated CLB logic using Analysis Summary values
+            if (totalErrors === 0 && wordCount >= 150 && complexityPercentage >= 50) {
+                ieltsScore = 9;
+                clbScore = 10;
+                console.log('✅ BAND 9: Total Errors = 0, Word Count >= 150, Complexity >= 50%');
+            }
+            else if (totalErrors === 0 && wordCount >= 150 && complexityPercentage >= 35) {
                 ieltsScore = 8;
-                celpipScore = 10;
-                console.log('✅ BAND 8: Total Errors < 2, Word Count > 150, Complexity > 25%');
+                clbScore = 10;
+                console.log('✅ BAND 8: Total Errors = 0, Word Count >= 150, Complexity >= 35%');
             }
-            else if (totalErrors === 2 && wordCount > 150 && complexityPercentage < 20) {
+            else if (totalErrors < 2 && wordCount >= 150 && complexityPercentage >= 30) {
+                ieltsScore = 7.5;
+                clbScore = 10;
+                console.log('✅ BAND 7.5: Total Errors < 2, Word Count >= 150, Complexity >= 30%');
+            }
+            else if (totalErrors < 2 && wordCount >= 150 && complexityPercentage >= 25) {
                 ieltsScore = 7;
-                celpipScore = 9;
-                console.log('✅ BAND 7: Total Errors = 2, Word Count > 150, Complexity < 20%');
+                clbScore = 9;
+                console.log('✅ BAND 7: Total Errors < 2, Word Count >= 150, Complexity >= 25%');
             }
-            else if (totalErrors === 3 && wordCount > 150 && complexityPercentage < 15) {
+            else if (totalErrors < 2 && wordCount >= 150 && complexityPercentage < 25) {
+                ieltsScore = 6.5;
+                clbScore = 8;
+                console.log('✅ BAND 6.5: Total Errors < 2, Word Count >= 150, Complexity < 25%');
+            }
+            else if (totalErrors === 2 && wordCount >= 150) {
+                ieltsScore = 6.5;
+                clbScore = 8;
+                console.log('✅ BAND 6.5: Total Errors = 2, Word Count >= 150');
+            }
+            else if (totalErrors > 2 && wordCount >= 150) {
                 ieltsScore = 6;
-                celpipScore = 8;
-                console.log('✅ BAND 6: Total Errors = 3, Word Count > 150, Complexity < 15%');
+                clbScore = 7;
+                console.log('✅ BAND 6: Total Errors > 2, Word Count >= 150');
             }
-            else if (totalErrors > 3 || wordCount < 150 || complexityPercentage < 5) {
-                ieltsScore = 5;
-                celpipScore = 6;
-                console.log('✅ BAND 5: Total Errors > 3 OR Word Count < 150 OR Complexity < 5%');
+            else if (wordCount >= 100 && wordCount <= 149) {
+                ieltsScore = 5.5;
+                clbScore = 6;
+                console.log('✅ BAND 5.5: Word Count between 100-149');
+            }
+            else if (wordCount >= 0 && wordCount < 100) {
+                ieltsScore = 4;
+                clbScore = 4;
+                console.log('✅ BAND 4: Word Count between 0-99');
             }
             else {
                 ieltsScore = "Analyse Summary";
-                celpipScore = "Analyse Summary";
+                clbScore = "Analyse Summary";
                 console.log('🔍 ANALYSE SUMMARY: Conditions do not match standard band criteria');
             }
             
-            console.log('🎯 FINAL BANDS FROM ANALYSIS SUMMARY: IELTS =', ieltsScore, ', CELPIP =', celpipScore);
+            console.log('🎯 FINAL BANDS FROM ANALYSIS SUMMARY: IELTS =', ieltsScore, ', CLB =', clbScore);
             
             return {
                 ielts: ieltsScore,
-                celpip: celpipScore,
+                clb: clbScore,
                 source: 'Analysis Summary Values'
             };
         }
